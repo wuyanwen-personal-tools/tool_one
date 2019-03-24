@@ -1,4 +1,13 @@
 {
-    "presets": ["@babel/preset-env"], 
+    "presets": [
+        ["@babel/env", {
+          "modules":"commonjs",
+          "targets": {
+            "browsers": ["ie >= 8"]
+          },
+          //"useBuiltIns": "entry"
+        }],
+    ],
+    //"presets": ["@babel/preset-env"], 
     "plugins": ["@babel/plugin-transform-runtime"] 
 }

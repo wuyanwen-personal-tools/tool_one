@@ -99,7 +99,7 @@ module.exports = {
                 include: /src/,          // 只转化src目录下的js
                 exclude: /node_modules/,
                 loader: 'babel-loader'  // 从右到左执行，所以注意顺序  
-                //兼容IE8的打包，打包会生成default关键字,IE8会报错
+                //es3ify-loader兼容IE8的打包，打包会生成default关键字,IE8会报错
             },
             // {
             //     test: /\.js$/,
@@ -113,10 +113,13 @@ module.exports = {
     },
     // server 服务
     devServer: {
-        port: 8848,
-        open: false
+        contentBase: path.join(__dirname, 'dist'), // 服务器资源的根目录，不写的话，默认为bundle.js
+        compress: true, // 服务器资源采用gzip压缩
+        port: 80,  // 运行的端口
+        overlay: true,  // 出错代码是否显示在html页面上
+        hot: true //热加载
     },
-    devtool: 'inline-source-map', 
+    //devtool: 'inline-source-map', 
     // 插件
     plugins: [
         // 
@@ -129,12 +132,20 @@ module.exports = {
             minify: {
                 collapseWhitespace: true //false | true
             },
-            // 添加hash
+            // 添加hash,向html引入的src链接后面增加一段hash值,消除缓存
             hash: true
         }),
         // css分离
         new MiniCssExtractPlugin('style.css'),
         // 删除文件 保留新文件
         new CleanWebpackPlugin(),
-    ]
+    ],
+    resolve: {
+        alias: {
+            //components: path.resolve(__dirname, 'src/components/') // 别名
+        },
+        extensions: ['.js', '.json'], // 忽略文件后缀
+        modules: ['node_modules']
+    },
+
 }
