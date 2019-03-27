@@ -5,6 +5,7 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // 清除文件
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
     // 模式
     //mode: 'production',
@@ -147,5 +148,50 @@ module.exports = {
         extensions: ['.js', '.json'], // 忽略文件后缀
         modules: ['node_modules']
     },
+    optimization: {
+        // runtimeChunk: { //打包runtime代码
+        //   name: 'manifest'
+        // },
+        minimizer: [
+          new UglifyJsPlugin({
+            uglifyOptions: {
+              warnings: false,
+              parse: {},
+              compress: {},
+              mangle: true, // Note `mangle.properties` is `false` by default.
+              output: null,
+              toplevel: false,
+              nameCache: null,
+              ie8: true,
+              keep_fnames: false,
+            },
+          }),
+        ],
+        // splitChunks:{  //打包node_modules里的代码
+        //   chunks: 'async',
+        //   minSize: 30000,
+        //   minChunks: 1,
+        //   maxAsyncRequests: 5,
+        //   maxInitialRequests: 3,
+        //   name: false,
+        //   cacheGroups: {
+        //     vendor: {
+        //       name: 'vendor',
+        //       chunks: 'initial',
+        //       priority: -10,
+        //       reuseExistingChunk: false,
+        //       test: /node_modules\/(.*)\.js/
+        //     },
+        //     styles: {
+        //       name: 'styles',
+        //       test: /\.(scss|css)$/,
+        //       chunks: 'all',
+        //       minChunks: 1,
+        //       reuseExistingChunk: true,
+        //       enforce: true
+        //     }
+        //   }
+        // }
+      }
 
 }

@@ -7,3 +7,4 @@ var funcName = (params) => {
 }
 funcName(2);
 document.querySelector('#app').innerHTML = text;
+console.log(123);
